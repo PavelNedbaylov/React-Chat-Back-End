@@ -1,7 +1,7 @@
-import mongoose from 'mongoose'
+import mongoose, {Schema} from 'mongoose'
 import validator from 'validator'
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new Schema({
     email: {
         type: String,
         required: 'Email address is required',
@@ -22,7 +22,10 @@ const UserSchema = new mongoose.Schema({
     },
     avatar: String,
     confirm_hash: String,
-    last_seen: Date
+    last_seen: {
+        type: Date,
+        default: Date.now()
+    }
 }, {
     timestamps: true
 })

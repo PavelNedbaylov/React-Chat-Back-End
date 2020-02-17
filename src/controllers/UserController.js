@@ -1,39 +1,46 @@
-import { UserModel } from '../schemas'
+import cloudinary from "../core/cloudinary";
+import { UploadFileModel } from "../models";
 
-export default class UserController {
-    index(req, res) {
-        const id = req.params.id;
-        UserModel.findById(id,(err,user)=>{
-            if(err){
-                return res.status(404).json({message:"Not found"})
-            }
-            res.json(user)
-        })
-    }
+class UserController {
+  create = (req, res) => {
+    const userId = req.user._id;
+    const file = req.file;
 
-    getMy(){
-        // TODO: return data about current user (auntification)
-    }
-
-    create(req, res) {
-        const postData = {
-            email: req.body.email,
-            fullname: req.body.fullname,
-            password: req.body.password
+    cloudinary.v2.uploader
+      .upload_stream({ resource_type: "auto" }, (error, result) => {
+        if (error) {
+          throw new Error(error);
         }
-        const user = new UserModel(postData);
-        user.save()
-            .then(data => res.json(data))
-            .catch(error => es.json(error))
-    }
 
-    delete(req, res) {
-        const id = req.params.id;
-        UserModel.findByIdAndRemove(id, (err,user)=>{
-            if(err){
-                return res.status(404).json({message:"Not found"})
-            }
-            res.json({message:`User ${user.fullname} was deleted`})
-        })
-    }
+        const fileData = {
+          filename: result.original_filename,
+          size: result.bytes,
+          ext: result.format,
+          url: result.url,
+          user: userId
+        };
+
+        const uploadFile = new UploadFileModel(fileData);
+
+        uploadFile
+          .save()
+          .then((fileObj) => {
+            res.json({
+              status: "success",
+              file: fileObj
+            });
+          })
+          .catch((err) => {
+            res.json({
+              status: "error",
+              message: err
+            });
+          });
+      })
+      .end(file.buffer);
+  };
+
+  delete = () => {};
 }
+
+export default UserController;
