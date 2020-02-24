@@ -1,6 +1,3 @@
-import express from 'express';
-import socket from 'socket.io';
-
 import { DialogModel, MessageModel } from '../models';
 
 class DialogController {
@@ -51,7 +48,7 @@ class DialogController {
         if (user) {
           return res.status(403).json({
             status: 'error',
-            message: 'Такой диалог уже есть',
+            message: 'Such dialog already exist',
           });
         } else {
           const dialog = new DialogModel(postData);

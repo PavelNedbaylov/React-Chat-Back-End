@@ -1,5 +1,4 @@
-
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 const MessageSchema = new Schema(
   {
@@ -18,6 +17,4 @@ const MessageSchema = new Schema(
   },
 );
 
-const MessageModel = mongoose.model('Message', MessageSchema);
-
-export default MessageModel;
+export default mongoose.model('Message', MessageSchema);

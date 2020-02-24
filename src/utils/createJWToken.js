@@ -8,7 +8,7 @@ export default (user) => {
           return result;
         },{})
     },
-    process.env.JWT_SECRET || '',
+    process.env.JWT_SECRET,
     {
       expiresIn: process.env.JWT_MAX_AGE,
       algorithm: 'HS256',

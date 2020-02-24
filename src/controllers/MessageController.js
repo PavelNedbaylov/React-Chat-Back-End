@@ -1,6 +1,3 @@
-import express from 'express';
-import socket from 'socket.io';
-
 import { MessageModel, DialogModel } from '../models';
 
 class MessageController {

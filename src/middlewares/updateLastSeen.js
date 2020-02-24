@@ -4,7 +4,7 @@ export default (req,_,next) => {
   if (req.user) {
     UserModel.findOneAndUpdate(
       { _id: req.user.id },
-      { last_seen: Date.new() },
+      { last_seen: Date.now() },
       { new: true },
       () => {}
     );
